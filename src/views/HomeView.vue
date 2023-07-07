@@ -337,7 +337,7 @@ export default {
       return arr.map((item, index) => {
         return {
           value: item,
-          label: "风机"+item,
+          label: "风机"+index,
         };
       });
     },
