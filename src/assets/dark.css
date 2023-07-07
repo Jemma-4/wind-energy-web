@@ -1,0 +1,109 @@
+.el-upload.el-upload--text {
+  width: 100%;
+}
+.el-input--suffix .el-input__inner {
+  background: #24262B;
+}
+.el-input.el-input--suffix input,
+.el-input.el-input--suffix input:hover,
+.el-select .el-input.is-focus .el-input__inner,
+.el-select .el-input__inner:focus,
+.el-select .el-input.is-disabled .el-input__inner:hover,
+.el-select
+  .el-input
+  .el-select__caret:hover
+  ~ .el-input.el-input--suffix
+  input {
+  border-color: #3f96a5 !important;
+  color: white !important;
+  background: #24262B !important;
+  box-shadow: 0 0 10px rgba(100, 100, 100, 1) !important;
+  height: 30px;
+  padding: 0px;
+	padding-left: 5%;
+  margin-right: 2px;
+	padding-right: 15%;
+}
+
+
+.el-select.turbine-version:hover::after,
+.el-select.time-btn:hover::after {
+  position: absolute;
+  left: 6px;
+  top: 34px;
+  background-color: #b2b2b2;
+  border-radius: 0px;
+  color: #000000;
+  font-size: 12px !important;
+  /*这里显示的内容为title属性对应的值*/
+  content: attr(mtitle);
+  z-index: 2;
+  width: 90%;
+}
+
+.el-select__caret.el-input__icon.el-icon-arrow-up {
+  line-height: 30px;
+  /* transform: scale(0.7); */
+}
+
+.el-input__suffix {
+  transform: scale(1);
+  float: right;
+  padding: 0px;
+  width: 12%;
+}
+
+.el-select__caret.el-input__icon {
+  width: 120%;
+}
+
+.el-select-dropdown.el-popper {
+  margin-top: 2px !important;
+  margin-left: 0px !important;
+  background: #24262B !important;
+  border: 0px;
+}
+
+.el-scrollbar__view.el-select-dropdown__list {
+  background: #24262B !important;
+  padding: 0px;
+}
+
+.el-input.is-disabled .el-input__inner,
+.el-input.is-disabled input::placeholder {
+  border-color: #2a626d !important;
+  color: rgb(69, 69, 69) !important;
+  background: #24262B;
+  box-shadow: 0 0 0px rgba(100, 100, 100, 1) !important;
+}
+
+.el-input.el-input--suffix input::placeholder
+{
+ width: 100% !important;
+}
+
+.el-input.is-disabled input::placeholder {
+  border-color: #2a626d !important;
+  background: #24262B;
+  box-shadow: 0 0 0px rgba(100, 100, 100, 1) !important;
+}
+
+.el-input.is-disabled input::placeholder {
+  border-color: #2a626d !important;
+  color: rgb(120, 120, 120) !important;
+  background: rgba(255, 255, 255, 0) !important;
+  transform: scale(1);
+  text-align: left;
+  width: 76%;
+  transform: scale(1); /* 用缩放来解决 */
+  transform-origin: left center; /* 左对齐 */
+}
+
+.el-button.el-button--primary.el-button--small {
+  height: 30px !important;
+}
+
+.el-button.el-button--primary.el-button--small.is-disabled {
+  background-color: #2a626d;
+  color: rgb(180, 180, 180) !important;
+}
