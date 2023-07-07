@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <div id="chart-resize-box">
     <div id="power-chart"></div>
   </div>
@@ -21,7 +21,10 @@ export default {
       real_power: [],
       predict_power: [],
       chart_data: initJson.data.turbine_data,
-      history:[],
+      history: [],
+      old_trueKeys: ["yd_15"],
+      max: 0,
+      min: 0,
     };
   },
   computed: {
@@ -46,13 +49,42 @@ export default {
     },
   },
   mounted() {
-    this.drawChart(this.chart_data, this.show_start, this.show_end);
+    this.drawChart(
+      this.old_trueKeys,
+      this.chart_data,
+      this.show_start,
+      this.show_end
+    );
+    // console.log(this.chart_data)
+    // console.log(this.timestampToDate(this.chart_data.map(item => (item.data_time))))
   },
   methods: {
-    drawChart(chart_data, show_start, show_end) {
+    drawChart(old_trueKeys, chart_data, show_start, show_end) {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("power-chart"));
-      const colors = ["#5470C6", "#91CC75", "#EE6666"];
+      const colors = [
+        "#5470C6",
+        "#91CC75",
+        "#EE6666",
+        "#FFB6C1",
+        "#6A5ACD",
+        "	#EEE8AA",
+        "#FFA500",
+        "#FF0000",
+        "#DEB887",
+      ];
+      // 设置初始的图例选中状态
+      var initialSelected = {
+        humidity: false,
+        pre_power: false,
+        pressure: false,
+        round_a_power: false,
+        round_a_ws: false,
+        temperature: false,
+        wind_direction: false,
+        wind_speed: false,
+        yd_15: true,
+      };
       let option;
       option = {
         color: colors,
@@ -62,84 +94,80 @@ export default {
             type: "cross",
           },
         },
-        grid: {
-          right: "20%",
-        },
-        toolbox: {
-          feature: {
-            dataView: { show: true, readOnly: false },
-            restore: { show: true },
-            saveAsImage: { show: true },
-          },
-        },
         legend: {
-          data: ["Evaporation", "Precipitation", "Temperature"],
+          data: [
+            "humidity",
+            "pre_power",
+            "pressure",
+            "round_a_power",
+            "round_a_ws",
+            "temperature",
+            "wind_direction",
+            "wind_speed",
+            "yd_15",
+          ],
+          selected: initialSelected,
         },
         xAxis: [
           {
             type: "category",
-            axisLabel: {
-            },
+            axisLabel: {},
             axisTick: {
               alignWithLabel: true,
             },
             // prettier-ignore
             data: this.timestampToDate(chart_data.map(item => (item.data_time))),
-          }, 
-          ,
-        ],
-        yAxis: [
-          {
-            type: "value",
-            name: "预测功率",
-            position: "right",
-            alignTicks: true,
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: colors[0],
-              },
-            },
-            axisLabel: {
-              formatter: "{value} w",
-            },
-          },
-          {
-            type: "value",
-            name: "真实功率",
-            position: "right",
-            alignTicks: true,
-            offset: 80,
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: colors[1],
-              },
-            },
-            axisLabel: {
-              formatter: "{value} w",
-            },
-          },
-          {
-            type: "value",
-            name: "误差情况",
-            interval: 20,
-            position: "left",
-            min: 0,
-            max: 100,
-            alignTicks: true,
-
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: colors[2],
-              },
-            },
-            axisLabel: {
-              formatter: "{value} %",
-            },
           },
         ],
+        series: Object.keys(initialSelected).map((item) => {
+          if (initialSelected[item]) {
+            return {
+              name: item,
+              type: "line",
+              data: chart_data.map((chart_item) => chart_item[item]),
+            };
+          } else {
+            return {
+              name: item,
+              type: "line",
+            };
+          }
+        }),
+        yAxis: Object.keys(initialSelected).map((item, index) => {
+          var max = Math.max.apply(
+            null,
+            chart_data.map((chart_item) => chart_item[item])
+          );
+          var min = Math.min.apply(
+            null,
+            chart_data.map((chart_item) => chart_item[item])
+          );
+          if (initialSelected[item]) {
+            return {
+              type: "value",
+              name: item,
+              splitLine: {
+                show: false,
+              },
+              show: false,
+              position: "left",
+              alignTicks: false,
+              offset: 0,
+              max: max,
+              min: min,
+              interval: (max - min) / 7,
+              axisLine: {
+                show: true,
+                lineStyle: {
+                  color: colors[index],
+                },
+              },
+              axisLabel: {
+                formatter: "{value}",
+              },
+            };
+          }
+        }),
         dataZoom: [
           {
             type: "slider",
@@ -147,34 +175,102 @@ export default {
             end: show_end,
           },
         ],
-        series: [
-          {
-             name: "Evaporation",
-            type: "line",
-            data: [
-              2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4,
-              3.3
-            ],
-          },
-          {
-            name: "Precipitation",
-            type: "line",
-            yAxisIndex: 1,
-            data: [
-              2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0,
-              2.3
-            ],
-          },
-          {
-            name: "Temperature",
-            type: "bar",
-            yAxisIndex: 2,
-            data: [2, 2.2, 3.3, 4.5, 3.3, 0.2, 0.3, 3.4, 3.0, 1.5, 2.0, 3.2],
-          },
-        ],
       };
       // 绘制图表
       option && myChart.setOption(option);
+      myChart.on("legendselectchanged", function (params) {
+        var selected = params.selected;
+        console.log(selected);
+
+        Object.keys(selected).forEach(function (element) {
+          if (selected[element]) {
+            if (
+              old_trueKeys.indexOf(element) === -1 &&
+              old_trueKeys.length < 3
+            ) {
+              console.log("element", element);
+              old_trueKeys.push(element);
+            }
+          } else {
+            if (
+              old_trueKeys.indexOf(element) !== -1 &&
+              old_trueKeys.length > 1
+            ) {
+              old_trueKeys.splice(
+                old_trueKeys.indexOf(element),
+                old_trueKeys.indexOf(element)
+              );
+            }
+          }
+        });
+        console.log("old_trueKeys", old_trueKeys);
+
+        var trueKeys = old_trueKeys;
+        this.old_trueKeys = old_trueKeys;
+        var positions = ["left", "right", "right"];
+        var offset = [0, 0, 60];
+        var series = trueKeys.map((item) => {
+          return {
+            name: item,
+            type: "line",
+            data: chart_data.map((chart_item) => chart_item[item]),
+          };
+        });
+        var yAxis = trueKeys.map((item, index) => {
+          var max = Math.max.apply(
+            null,
+            chart_data.map((chart_item) => chart_item[item])
+          );
+          var min = Math.min.apply(
+            null,
+            chart_data.map((chart_item) => chart_item[item])
+          );
+          return {
+            type: "value",
+            name: item,
+            splitLine: {
+              show: false,
+            },
+            show: false,
+            position: positions[index],
+            offset: offset[index],
+            max: max,
+            min: min,
+            interval: (max - min) / 7,
+            alignTicks: false,
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: colors[Object.keys(selected).indexOf(item)],
+              },
+            },
+            axisLabel: {
+              formatter: "{value}",
+            },
+          };
+        });
+        var iSelected = {
+          humidity: false,
+          pre_power: false,
+          pressure: false,
+          round_a_power: false,
+          round_a_ws: false,
+          temperature: false,
+          wind_direction: false,
+          wind_speed: false,
+          yd_15: false,
+        };
+        trueKeys.map((item) => {iSelected[item]=true});
+        console.log('n_selected',iSelected)
+        // 更新图表配置项
+        myChart.setOption({
+          legend: {
+            selected: iSelected,
+          },
+          yAxis: yAxis,
+          series: series,
+        });
+      });
       window.addEventListener("resize", function () {
         myChart.resize();
       });
@@ -188,6 +284,29 @@ export default {
         }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
         return formattedTime;
       });
+    },
+    get_Up_Down() {
+      // var keys = [
+      //   "humidity",
+      //   "pre_power",
+      //   "pressure",
+      //   "round_a_power",
+      //   "round_a_ws",
+      //   "temperature",
+      //   "wind_direction",
+      //   "wind_speed",
+      //   "yd_15",
+      // ];
+      // this.keys.map((key) => {
+      //   max = Math.max.apply(
+      //     null,
+      //     this.chart_data.map((item) => item[key])
+      //   );
+      //   min = Math.max.apply(
+      //     null,
+      //     this.chart_data.map((item) => item[key])
+      //   );
+      // });
     },
   },
   watch: {},
@@ -204,4 +323,4 @@ export default {
   width: 100%;
 }
 </style>
-   -->
+  
