@@ -199,7 +199,7 @@ export default {
       this.p_datetime_start_list = this.tmp_p_datetime_start_list
     },
     SelectPredictStart(p_start) {
-      this.p_datetime_start = p_start
+      this.p_datetime_start=p_start
       console.log(this.p_datetime_start)
       this.p_datetime_end_list = this.filterDatesGreaterThan(this.p_datetime_start_list, p_start)
     },
@@ -250,7 +250,7 @@ export default {
           this.predict_chart_data = res.data.data.pred_result
           console.log(this.predict_chart_data)
         })
-      
+
       // todo:请求预测数据:predict_chart_data
 
     },
