@@ -86,7 +86,6 @@ export default {
             // prettier-ignore
             data: this.timestampToDate(chart_data.map(item => (item.data_time))),
           }, 
-          ,
         ],
         yAxis: [
           {
