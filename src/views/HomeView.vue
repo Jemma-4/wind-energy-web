@@ -2,54 +2,25 @@
   <div class="home">
     <!-- 页面头 -->
 
-    <top-header class="top-header"/>
+    <top-header class="top-header" />
 
     <!-- 数据导入的接口 -->
     <div class="upload-line">
       <!-- 这里需要一个风机的选择  默认一个风机，全部的历史数据-->
-      <input
-        placeholder="请输入风场名称"
-        v-model="upload_turbine"
-        class="turbine-input"
-      />
-      <input
-        placeholder="请输入数据版本号"
-        v-model="upload_version"
-        class="turbine-input"
-      />
-      <input
-        placeholder="请选择上传的风场csv数据"
-        v-model="upload_path"
-        disabled="true"
-        class="datapath-input"
-      />
-      <el-upload
-        class="upload"
-        :action="upload_url"
-        :limit="1"
-        :on-change="handleUploadSuccess"
-        :file-list="fileList"
-      >
+      <input placeholder="请输入风场名称" v-model="upload_turbine" class="turbine-input" />
+      <input placeholder="请输入数据版本号" v-model="upload_version" class="turbine-input" />
+      <input placeholder="请选择上传的风场csv数据" v-model="upload_path" disabled="true" class="datapath-input" />
+      <el-upload class="upload" :action="upload_url" :limit="1" :on-change="handleUploadSuccess" :file-list="fileList">
         <el-button size="small" type="primary" @click="handleUpload">点击上传</el-button>
       </el-upload>
     </div>
 
     <div class="search-line">
       <!-- 这里需要一个风机的选择  默认一个风机，全部的历史数据-->
-      <dark-select
-        message="风机"
-        :options="turbine_options"
-        @selected="SelectTurbine"
-        class="turbine-version"
-      />
+      <dark-select message="风机" :options="turbine_options" @selected="SelectTurbine" class="turbine-version" />
 
       <!-- 增加一个数据版本的选择 -->
-      <dark-select
-        message="数据版本"
-        :options="version_options"
-        @selected="SelectVersion"
-        class="turbine-version"
-      />
+      <dark-select message="数据版本" :options="version_options" @selected="SelectVersion" class="turbine-version" />
 
       <!-- <dark-select message="历史数据开始时间" :options="h_datetime_start_list" @selected="SelectHistoryStart" class="time-btn" />
       <dark-select message="历史数据结束时间" :options="h_datetime_end_list" @selected="SelectHistoryEnd" class="time-btn" />
@@ -57,29 +28,18 @@
 
 
       <dark-select message="预测数据结束时间" :options="p_datetime_end_list" @selected="SelectPredictEnd" class="time-btn" /> -->
-      <!-- <el-date-picker v-model="h_datetime" type="datetimerange" start-placeholder="历史开始时间" end-placeholder="历史结束时间"
-        :default-time="['00:00:00', '05:00:00']" :picker-options="historyDateLimit" :disabled="h_datetime_start_list.length === 0">
-      </el-date-picker>
-      <el-date-picker v-model="p_datetime" type="datetimerange" start-placeholder="预测开始时间" end-placeholder="预测结束时间"
-        :default-time="['05:00:00', '00:00:00']" :disabled="p_datetime.length === 0">
-      </el-date-picker> -->
       <el-date-picker v-model="h_datetime" type="datetimerange" start-placeholder="历史开始时间" end-placeholder="历史结束时间"
-        :default-time="['00:00:00', '05:00:00']" :picker-options="historyDateLimit" >
+        :default-time="['00:00:00', '05:00:00']" :picker-options="historyDateLimit" :disabled="h_start_end.length === 0"
+        @change="timeRangeChange">
       </el-date-picker>
       <el-date-picker v-model="p_datetime" type="datetimerange" start-placeholder="预测开始时间" end-placeholder="预测结束时间"
-        :default-time="['05:00:00', '00:00:00']" >
+        :default-time="['05:00:00', '00:00:00']" :disabled="p_start_end.length === 0" @change="timeRangeChange">
       </el-date-picker>
       <dark-select message="模型" :options="model_options" @selected="SelectModel" class="time-btn" />
 
       <!-- 查询按钮 -->
       <div class="time-btn">
-        <el-button
-          size="small"
-          type="primary"
-          :disabled="!all_selected"
-          @click="handleSearch"
-          >预测</el-button
-        >
+        <el-button size="small" type="primary" :disabled="!all_selected" @click="handleSearch">预测</el-button>
       </div>
     </div>
     <div id="power-chart-box">
@@ -109,8 +69,8 @@ export default {
     return {
       upload_url: baseurl + "turbine/import/3/v3",
       fileList: [], //页面：上传文件列表
-      upload_turbine :"",
-      upload_version:"",
+      upload_turbine: "",
+      upload_version: "",
       turbine_options: [
         {
           value: "选项1",
@@ -125,36 +85,26 @@ export default {
           label: "蚵仔煎",
         },
       ], //页面：可选风机列表
-      model_options: [
-        {
-          value: 1,
-          label: "mix",
-        },
-        {
-          value: 2,
-          label: "mlp",
-        },
-        {
-          value: 3,
-          label: "seq2seq",
-        },
-      ], //页面：可选模型列表
+      model_options: [], //页面：可选模型列表
       version_options: [], //页面：可选版本列表
-      h_datetime_start_list: [], //页面：历史数据时间开始列表
-      h_datetime_end_list: [], //页面：历史数据时间结束列表
-      tmp_p_datetime_start_list: [], //逻辑缓存值
-      p_datetime_start_list: [], //页面：预测数据时间开始列表
-      p_datetime_end_list: [], //页面：预测数据时间结束列表
+
+      // h_datetime_start_list: [], //页面：历史数据时间开始列表
+      // h_datetime_end_list: [], //页面：历史数据时间结束列表
+      // tmp_p_datetime_start_list: [], //逻辑缓存值
+      // p_datetime_start_list: [], //页面：预测数据时间开始列表
+      // p_datetime_end_list: [], //页面：预测数据时间结束列表
       all_selected: false, //逻辑
       history_chart_data: [], //数据：图表历史数据
       predict_chart_data: [], //数据：图表预测数据
       turbine: 0, //逻辑：选择风机
       version: 0, //逻辑：选择版本
       model: 0, //逻辑：选择模型
-      h_datetime_start: 0, //逻辑：选择历史开始时间
-      h_datetime_end: 0, //逻辑：选择历史结束时间
-      p_datetime_start: 0, //逻辑：选择预测开始时间
-      p_datetime_end: 0, //逻辑：选择预测结束时间
+      // h_datetime_start: 0, //逻辑：选择历史开始时间
+      // h_datetime_end: 0, //逻辑：选择历史结束时间
+      // p_datetime_start: 0, //逻辑：选择预测开始时间
+      // p_datetime_end: 0, //逻辑：选择预测结束时间
+      h_start_end: [],  // 页面，历史起止时间，两元素
+      p_start_end: [],  // 页面，预测起止时间，两元素
       h_datetime: [],
       p_datetime: [],
     };
@@ -187,7 +137,7 @@ export default {
     //     (this.p_datetime_start = 0),
     //     (this.p_datetime_end = 0);
     // },
-    handleUpload(){
+    handleUpload() {
       console.log("iubhubhuvbu")
     },
     handleUploadSuccess(file, fileList) {
@@ -229,11 +179,11 @@ export default {
           this.version,
       }).then((res) => {
         // var data = res.data.data
-        var h_time_list = this.timestampToDate(res.data.data.past_time_list);
-        var p_time_list = this.timestampToDate(res.data.data.pred_time_list);
-        this.h_datetime_start_list = this.listToOptions(h_time_list);
-        console.log(this.h_datetime_start_list);
-        this.tmp_p_datetime_start_list = this.listToOptions(p_time_list);
+        this.h_start_end = this.timestampToDate(res.data.data.past_time_list);
+        this.p_start_end = this.timestampToDate(res.data.data.pred_time_list);
+        // this.h_datetime_start_list = this.listToOptions(h_time_list);
+        // console.log(this.h_datetime_start_list);
+        // this.tmp_p_datetime_start_list = this.listToOptions(p_time_list);
         // console.log(data)
       });
       // todo complete:网络请求获取对应的时间列
@@ -332,9 +282,8 @@ export default {
       return timestampList.map((timestamp) => {
         const date = new Date(timestamp * 1000);
         // 使用适合您的时间格式化选项格式化时间戳
-        const formattedTime = `${date.getFullYear()}-${
-          date.getMonth() + 1
-        }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+        const formattedTime = `${date.getFullYear()}-${date.getMonth() + 1
+          }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
         return formattedTime;
       });
     },
@@ -349,17 +298,42 @@ export default {
       return timestamp - (timestamp % (15 * 60))
       // console.log(new_timestamp)
       // return new Date(new_timestamp * 1000);
-    }
+    },
+    timeRangeChange() {
+      console.log('变化')
+      // console.log(this.h_datetime)
+      // console.log(this.p_datetime)
+      if (!(this.h_datetime.length == 0 || this.p_datetime.length == 0)) {
+        console.log(this.h_datetime, this.p_datetime)
+        this.model_options = [
+          {
+            value: 1,
+            label: "mix",
+          },
+          {
+            value: 2,
+            label: "mlp",
+          },
+          {
+            value: 3,
+            label: "seq2seq",
+          },
+        ]
+      }
+
+    },
   },
 };
 </script>
 <style scoped>
 .home {
-  height:100%;
+  height: 100%;
 }
-.top-header{
-  height:15%;
+
+.top-header {
+  height: 15%;
 }
+
 .upload-line {
   width: 100%;
   height: 5%;
@@ -372,11 +346,12 @@ export default {
   float: left;
   margin-left: 2%;
 }
+
 .turbine-input,
 .turbine-input:focus,
-.turbine-input:active  {
+.turbine-input:active {
   width: 7.7%;
-  margin-right:0.4%;
+  margin-right: 0.4%;
   float: left;
   background: #24262b;
   height: 27px;
@@ -387,6 +362,7 @@ export default {
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
   outline: none;
 }
+
 .datapath-input {
   width: 30%;
   float: left;
@@ -413,7 +389,7 @@ export default {
 
 .search-line {
   width: 100%;
-  height:5%;
+  height: 5%;
   float: left;
   margin-top: 1%;
 }
