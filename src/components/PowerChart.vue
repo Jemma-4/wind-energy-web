@@ -11,55 +11,22 @@ export default {
   props: {},
   data() {
     return {
-      startTime: 1625200000000, // 开始时间戳
-      endTime: 1625286400000, // 结束时间戳
-      interval: 15 * 60 * 1000, // 时间间隔（15分钟，单位为毫秒）
-      show_start: 1,
-      show_end: 5,
-      dateList: [],
-      predict_start: 1625285500000,
-      real_power: [],
-      predict_power: [],
       chart_data: initJson.data.turbine_data,
-      history: [],
       old_trueKeys: ["yd_15"],
-      max: 0,
-      min: 0,
     };
   },
   computed: {
-    timestampList() {
-      const list = [];
-      let currentTime = this.startTime;
-      while (currentTime < this.endTime) {
-        list.push(currentTime);
-        currentTime += this.interval;
-      }
-      return list;
-    },
-    formattedTimestampList() {
-      return this.timestampList.map((timestamp) => {
-        const date = new Date(timestamp);
-        // 使用适合您的时间格式化选项格式化时间戳
-        const formattedTime = `${date.getFullYear()}-${
-          date.getMonth() + 1
-        }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
-        return formattedTime;
-      });
-    },
   },
   mounted() {
     this.drawChart(
       this.old_trueKeys,
       this.chart_data,
-      this.show_start,
-      this.show_end
     );
     // console.log(this.chart_data)
     // console.log(this.timestampToDate(this.chart_data.map(item => (item.data_time))))
   },
   methods: {
-    drawChart(old_trueKeys, chart_data, show_start, show_end) {
+    drawChart(old_trueKeys, chart_data) {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("power-chart"));
       const colors = [
@@ -163,8 +130,7 @@ export default {
         dataZoom: [
           {
             type: "slider",
-            start: show_start,
-            end: show_end,
+            zoomOnMouseWheel:true
           },
         ],
       };
@@ -172,7 +138,7 @@ export default {
       option && myChart.setOption(option);
       myChart.on("legendselectchanged", function (params) {
         var selected = params.selected;
-        console.log(selected);
+        // console.log(selected);
 
         Object.keys(selected).forEach(function (element) {
           if (selected[element]) {
@@ -180,7 +146,7 @@ export default {
               old_trueKeys.indexOf(element) === -1 &&
               old_trueKeys.length < 3
             ) {
-              console.log("element", element);
+              // console.log("element", element);
               old_trueKeys.push(element);
             }
           } else {
@@ -195,7 +161,7 @@ export default {
             }
           }
         });
-        console.log("old_trueKeys", old_trueKeys);
+        // console.log("old_trueKeys", old_trueKeys);
 
         var trueKeys = old_trueKeys;
         this.old_trueKeys = old_trueKeys;
@@ -213,7 +179,7 @@ export default {
         trueKeys.map((item) => {
           iSelected[item] = true;
         });
-        console.log("n_selected", iSelected);
+        // console.log("n_selected", iSelected);
         // 更新图表配置项
         myChart.setOption({
           legend: {
@@ -227,7 +193,7 @@ export default {
     },
     timestampToDate(timestampList) {
       return timestampList.map((timestamp) => {
-        const date = new Date(timestamp);
+        const date = new Date(timestamp*1000);
         // 使用适合您的时间格式化选项格式化时间戳
         const formattedTime = `${date.getFullYear()}-${
           date.getMonth() + 1

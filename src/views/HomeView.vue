@@ -213,27 +213,6 @@ export default {
           };
         });
       });
-      // console.log(this.turbine);
-      // todo complete:网络请求获取对应的数据版本
-      // let version = [
-      //   {
-      //     value: "选项1",
-      //     label: "黄金糕",
-      //   },
-      //   {
-      //     value: "选项2",
-      //     label: "双皮奶",
-      //   },
-      //   {
-      //     value: "选项3",
-      //     label: "蚵仔煎",
-      //   },
-      //   {
-      //     value: "选项4",
-      //     label: "龙须面",
-      //   },
-      // ];
-      // this.version_options = version;
     },
     SelectVersion(version) {
       this.version = version;
