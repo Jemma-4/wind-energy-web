@@ -119,20 +119,6 @@ export default {
             data: this.timestampToDate(chart_data.map(item => (item.data_time))),
           },
         ],
-        series: Object.keys(initialSelected).map((item) => {
-          if (initialSelected[item]) {
-            return {
-              name: item,
-              type: "line",
-              data: chart_data.map((chart_item) => chart_item[item]),
-            };
-          } else {
-            return {
-              name: item,
-              type: "line",
-            };
-          }
-        }),
         yAxis: Object.keys(initialSelected).map((item, index) => {
           var max = Math.max.apply(
             null,
@@ -142,31 +128,37 @@ export default {
             null,
             chart_data.map((chart_item) => chart_item[item])
           );
-          if (initialSelected[item]) {
-            return {
-              type: "value",
-              name: item,
-              splitLine: {
-                show: false,
-              },
+          return {
+            type: "value",
+            name: item,
+            splitLine: {
               show: false,
-              position: "left",
-              alignTicks: false,
-              offset: 0,
-              max: max,
-              min: min,
-              interval: (max - min) / 7,
-              axisLine: {
-                show: true,
-                lineStyle: {
-                  color: colors[index],
-                },
+            },
+            show: false,
+            position: "left",
+            alignTicks: false,
+            offset: 0,
+            max: max,
+            min: min,
+            interval: (max - min) / 7,
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: colors[index],
               },
-              axisLabel: {
-                formatter: "{value}",
-              },
-            };
-          }
+            },
+            axisLabel: {
+              formatter: "{value}",
+            },
+          };
+        }),
+        series: Object.keys(initialSelected).map((item) => {
+          return {
+            name: item,
+            type: "line",
+            data: chart_data.map((chart_item) => chart_item[item]),
+            yAxisIndex:Object.keys(initialSelected).indexOf(item)
+          };
         }),
         dataZoom: [
           {
@@ -207,48 +199,6 @@ export default {
 
         var trueKeys = old_trueKeys;
         this.old_trueKeys = old_trueKeys;
-        var positions = ["left", "right", "right"];
-        var offset = [0, 0, 60];
-        var series = trueKeys.map((item) => {
-          return {
-            name: item,
-            type: "line",
-            data: chart_data.map((chart_item) => chart_item[item]),
-          };
-        });
-        var yAxis = trueKeys.map((item, index) => {
-          var max = Math.max.apply(
-            null,
-            chart_data.map((chart_item) => chart_item[item])
-          );
-          var min = Math.min.apply(
-            null,
-            chart_data.map((chart_item) => chart_item[item])
-          );
-          return {
-            type: "value",
-            name: item,
-            splitLine: {
-              show: false,
-            },
-            show: false,
-            position: positions[index],
-            offset: offset[index],
-            max: max,
-            min: min,
-            interval: (max - min) / 7,
-            alignTicks: false,
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: colors[Object.keys(selected).indexOf(item)],
-              },
-            },
-            axisLabel: {
-              formatter: "{value}",
-            },
-          };
-        });
         var iSelected = {
           humidity: false,
           pre_power: false,
@@ -260,15 +210,15 @@ export default {
           wind_speed: false,
           yd_15: false,
         };
-        trueKeys.map((item) => {iSelected[item]=true});
-        console.log('n_selected',iSelected)
+        trueKeys.map((item) => {
+          iSelected[item] = true;
+        });
+        console.log("n_selected", iSelected);
         // 更新图表配置项
         myChart.setOption({
           legend: {
             selected: iSelected,
           },
-          yAxis: yAxis,
-          series: series,
         });
       });
       window.addEventListener("resize", function () {
@@ -319,7 +269,7 @@ export default {
   height: 100%;
 }
 #power-chart {
-  height: 600px;
+  height: 100%;
   width: 100%;
 }
 </style>
