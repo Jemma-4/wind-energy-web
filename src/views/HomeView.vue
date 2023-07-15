@@ -29,13 +29,13 @@
 
       <dark-select message="预测数据结束时间" :options="p_datetime_end_list" @selected="SelectPredictEnd" class="time-btn" /> -->
       <el-date-picker v-model="h_datetime" type="datetimerange" start-placeholder="历史开始时间" end-placeholder="历史结束时间"
-        :default-time="['00:00:00', '05:00:00']" :picker-options="historyDateLimit" :disabled="h_start_end.length === 0"
+        :default-time="['00:00:00', '05:00:00']" :picker-options="historyDateLimit" 
         @change="timeRangeChange">
       </el-date-picker>
       <el-date-picker v-model="p_datetime" type="datetimerange" start-placeholder="预测开始时间" end-placeholder="预测结束时间"
         :default-time="['05:00:00', '00:00:00']" :disabled="p_start_end.length === 0" @change="timeRangeChange">
       </el-date-picker>
-      <dark-select message="模型" :options="model_options" @selected="SelectModel" class="time-btn" />
+      <dark-select message="模型" :options="model_options" @selected="SelectModel" class="turbine-version" />
 
       <!-- 查询按钮 -->
       <div class="time-btn">
@@ -43,7 +43,7 @@
       </div>
     </div>
     <div id="power-chart-box">
-      <power-chart />
+      <!-- <power-chart /> -->
       <!-- <predict-chart/> -->
     </div>
   </div>
@@ -60,7 +60,7 @@ import { baseurl, get, post } from "../network/request.js";
 export default {
   name: "HomeView",
   components: {
-    PowerChart,
+    // PowerChart,
     TopHeader,
     DarkSelect,
     // PredictChart
@@ -68,9 +68,11 @@ export default {
   data() {
     return {
       upload_url: baseurl + "turbine/import/3/v3",
+      upload_path:"",
       fileList: [], //页面：上传文件列表
       upload_turbine: "",
       upload_version: "",
+      turbine_ani:"../../public/turbine/wind.html",
       turbine_options: [
         {
           value: "选项1",
@@ -151,6 +153,7 @@ export default {
       }
       console.log(document.getElementsByClassName("el-upload__input")[0].value);
       this.getTurbineList();
+      this.upload_path=document.getElementsByClassName("el-upload__input")[0].value
     },
     SelectTurbine(turbine) {
       this.turbine = turbine;
@@ -326,8 +329,10 @@ export default {
 };
 </script>
 <style scoped>
+
 .home {
   height: 100%;
+ 
 }
 
 .top-header {
@@ -341,11 +346,12 @@ export default {
 
 .upload {
   width: 12%;
-  height: 20%;
+  height: 100%;
   padding: 0px;
   float: left;
   margin-left: 2%;
 }
+
 
 .turbine-input,
 .turbine-input:focus,
@@ -354,7 +360,7 @@ export default {
   margin-right: 0.4%;
   float: left;
   background: #24262b;
-  height: 27px;
+  height: 100%;
   border: 0px;
   color: white !important;
   border: 1px solid #3f96a5;
@@ -367,7 +373,7 @@ export default {
   width: 30%;
   float: left;
   background: #24262b;
-  height: 27px;
+  height: 100%;
   border: 0px;
   color: white !important;
   border: 1px solid #3f96a5;
@@ -376,11 +382,12 @@ export default {
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
 }
 
-.el-button.el-button--primary.el-button--small {
+.el-button.el-button--primary.el-button--small,
+.my-btn {
   color: white;
   background: #3f96a5;
   border: 0px;
-  height: 40px;
+  height: 100%;
   width: 100%;
   float: left;
   padding: 0px;
@@ -398,12 +405,14 @@ export default {
   width: 8%;
   float: left;
   margin-right: 0.5%;
+  height:100%;
 }
 
 .time-btn {
   width: 12%;
   float: left;
   margin-right: 0.5%;
+  height:100%;
 }
 
 #power-chart-box {

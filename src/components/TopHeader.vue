@@ -36,7 +36,7 @@ export default {
 
 .center-title {
   position: absolute;
-  font-size: clamp(0.58rem, 0.137rem + 2.83vw, 1.2rem);
+  font-size: clamp(0.58rem, 0.137rem + 2.83vw, 1.2rem) !important;
   font-weight: bold;
   left: 50%;
   top: 12px;

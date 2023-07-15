@@ -1,5 +1,5 @@
 import axios from 'axios'
-export var baseurl = 'http://127.0.0.1:5000/api/'
+export var baseurl = 'http://172.20.10.3:5000/api/'
 export function get(config){
 
     const instance=axios.create({
