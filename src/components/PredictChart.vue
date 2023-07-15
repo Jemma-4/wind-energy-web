@@ -4,14 +4,13 @@
   </div>
 </template>
     
-  <script>
+<script>
 import predictJson from "../assets/json/pred_return.json";
 export default {
   name: "PredictChart",
-  props: {},
+  props: { chart_data: {} },
   data() {
     return {
-      chart_data: predictJson.data,
     };
   },
   computed: {
@@ -28,9 +27,8 @@ export default {
       return this.timestampList.map((timestamp) => {
         const date = new Date(timestamp);
         // 使用适合您的时间格式化选项格式化时间戳
-        const formattedTime = `${date.getFullYear()}-${
-          date.getMonth() + 1
-        }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+        const formattedTime = `${date.getFullYear()}-${date.getMonth() + 1
+          }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
         return formattedTime;
       });
     },
@@ -63,7 +61,7 @@ export default {
         tooltip: {
           trigger: "axis",
           axisPointer: {
-            type: "cross",
+            type: "line",
           },
         },
         grid: {
@@ -166,23 +164,9 @@ export default {
             type: "value",
             name: "diff",
             show: false,
-            alignTicks: true,
-            max: Math.max.apply(
-              null,
-              chart_data.his_result
-                .map((chart_item) => 0)
-                .concat(
-                  chart_data.pred_result.map((chart_item) => Math.log(Math.abs(chart_item["Diff"]*chart_item["TRUE_YD15"])))
-                )
-            ),
-            min: Math.min.apply(
-              null,
-              chart_data.his_result
-                .map((chart_item) => 0)
-                .concat(
-                  chart_data.pred_result.map((chart_item) => Math.log(Math.abs(chart_item["Diff"]*chart_item["TRUE_YD15"])))
-                )
-            ),
+            alignTicks: false,
+            max: 100,
+            min: 0,
           },
         ],
         visualMap: {
@@ -232,15 +216,15 @@ export default {
             data: chart_data.his_result
               .map((chart_item) => 0)
               .concat(
-                chart_data.pred_result.map((chart_item) => Math.log(Math.abs(chart_item["Diff"]*chart_item["TRUE_YD15"])))
+                chart_data.pred_result.map((chart_item) => chart_item["Diff"] * 100)
               ),
           },
         ],
         dataZoom: [
           {
             type: "slider",
-            startValue:this.timestampToDate(chart_data.pred_result.map(item => (item['DATATIME'])))[0],
-            endValue:this.timestampToDate(chart_data.pred_result.map(item => (item['DATATIME'])))[1000]
+            startValue: this.timestampToDate(chart_data.pred_result.map(item => (item['DATATIME'])))[0],
+            endValue: this.timestampToDate(chart_data.pred_result.map(item => (item['DATATIME'])))[chart_data.pred_result.length - 1]
           },
         ],
       };
@@ -254,9 +238,8 @@ export default {
       return timestampList.map((timestamp) => {
         const date = new Date(timestamp * 1000);
         // 使用适合您的时间格式化选项格式化时间戳
-        const formattedTime = `${date.getFullYear()}-${
-          date.getMonth() + 1
-        }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+        const formattedTime = `${date.getFullYear()}-${date.getMonth() + 1
+          }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
         return formattedTime;
       });
     },
@@ -284,15 +267,26 @@ export default {
       // });
     },
   },
-  watch: {},
+  watch: {
+    "chart_data": {
+      handler(newVal, oldVal) {
+        this.drawChart(newVal)
+        // console.log(`新的值: ${newVal}`);
+        // console.log(`旧的值: ${oldVal}`);
+        // console.log("hellow  world");
+      },
+      immediate:true
+    }
+  },
 };
 </script>
     
-  <style scoped>
+<style scoped>
 #chart-resize-box {
   width: 100%;
   height: 100%;
 }
+
 #predict-chart {
   height: 100%;
   width: 100%;

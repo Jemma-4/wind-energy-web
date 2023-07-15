@@ -40,7 +40,15 @@ export default {
     disabled() {
       return this.options.length === 0
     }
-  }
+  },
+  watch: {
+    "options": {
+      handler(newVal, oldVal) {
+        this.item_selected = "";
+      },
+      immediate:true
+    }
+  },
 };
 </script>
     

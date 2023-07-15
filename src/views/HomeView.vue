@@ -9,8 +9,8 @@
       <!-- 这里需要一个风机的选择  默认一个风机，全部的历史数据-->
       <input placeholder="请输入风场名称" v-model="upload_turbine" class="turbine-input" />
       <input placeholder="请输入数据版本号" v-model="upload_version" class="turbine-input" />
-      <input placeholder="请选择上传的风场csv数据" v-model="upload_path" disabled="true" class="datapath-input" />
-      <el-upload class="upload" :action="upload_url" :limit="1" :on-change="handleUploadSuccess" :file-list="fileList">
+      <input placeholder="请选择上传的风场csv数据" disabled="true" class="datapath-input"/>
+      <el-upload class="upload" :action="upload_url" :limit="1" :on-change="handleUploadSuccess" :file-list="fileList" :before-upload="update_url">
         <el-button size="small" type="primary" @click="handleUpload">点击上传</el-button>
       </el-upload>
     </div>
@@ -29,11 +29,11 @@
 
       <dark-select message="预测数据结束时间" :options="p_datetime_end_list" @selected="SelectPredictEnd" class="time-btn" /> -->
       <el-date-picker v-model="h_datetime" type="datetimerange" start-placeholder="历史开始时间" end-placeholder="历史结束时间"
-        :default-time="['00:00:00', '05:00:00']" :picker-options="historyDateLimit" 
-        @change="timeRangeChange">
+        :default-time="['00:00:00', '05:00:00']" :picker-options="historyDateLimit" :disabled="h_start_end.length === 0"
+        @change="hisTimeRangeChange">
       </el-date-picker>
       <el-date-picker v-model="p_datetime" type="datetimerange" start-placeholder="预测开始时间" end-placeholder="预测结束时间"
-        :default-time="['05:00:00', '00:00:00']" :disabled="p_start_end.length === 0" @change="timeRangeChange">
+        :default-time="['05:00:00', '00:00:00']" :disabled="p_start_end.length === 0" @change="predTimeRangeChange">
       </el-date-picker>
       <dark-select message="模型" :options="model_options" @selected="SelectModel" class="turbine-version" />
 
@@ -43,7 +43,8 @@
       </div>
     </div>
     <div id="power-chart-box">
-      <!-- <power-chart /> -->
+      <power-chart :chart_data="history_chart_data" v-if="history_chart_data.length!=0&&Object.keys(predict_chart_data).length==0"/>
+      <predict-chart :chart_data="predict_chart_data" v-if="Object.keys(predict_chart_data).length!=0"/>
       <!-- <predict-chart/> -->
     </div>
   </div>
@@ -60,14 +61,14 @@ import { baseurl, get, post } from "../network/request.js";
 export default {
   name: "HomeView",
   components: {
-    // PowerChart,
+    PowerChart,
     TopHeader,
     DarkSelect,
-    // PredictChart
+    PredictChart
   },
   data() {
     return {
-      upload_url: baseurl + "turbine/import/3/v3",
+      upload_url: "",
       upload_path:"",
       fileList: [], //页面：上传文件列表
       upload_turbine: "",
@@ -97,7 +98,7 @@ export default {
       // p_datetime_end_list: [], //页面：预测数据时间结束列表
       all_selected: false, //逻辑
       history_chart_data: [], //数据：图表历史数据
-      predict_chart_data: [], //数据：图表预测数据
+      predict_chart_data: {}, //数据：图表预测数据
       turbine: 0, //逻辑：选择风机
       version: 0, //逻辑：选择版本
       model: 0, //逻辑：选择模型
@@ -116,6 +117,9 @@ export default {
     this.getTurbineList();
   },
   methods: {
+    update_url(file){
+      this.upload_url = baseurl + 'turbine/import/'+this.upload_turbine +'/' + this.upload_version;
+    },
     getTurbineList() {
       get({
         url: baseurl + "turbine/all",
@@ -130,15 +134,18 @@ export default {
         // this.clearState()
       });
     },
-    // clearState() {
-    //   (this.turbine = 0),
-    //     (this.version = 0),
-    //     (this.model = 0),
-    //     (this.h_datetime_start = 0),
-    //     (this.h_datetime_end = 0),
-    //     (this.p_datetime_start = 0),
-    //     (this.p_datetime_end = 0);
-    // },
+    clearState() {
+      this.all_selected = false;
+      this.model_options= [];
+      this.predict_chart_data = {};
+      this.history_chart_data = [];
+      this.version_options = [];
+      this.h_start_end= [];  // 页面，历史起止时间，两元素
+      this.p_start_end= [];  // 页面，预测起止时间，两元素
+      this.h_datetime= [];
+      this.p_datetime= [];
+      // console.log('clear')
+    },
     handleUpload() {
       console.log("iubhubhuvbu")
     },
@@ -157,11 +164,12 @@ export default {
     },
     SelectTurbine(turbine) {
       this.turbine = turbine;
+      this.clearState();
       get({
         url: baseurl + "turbine/versionlist/" + turbine,
       }).then((res) => {
         var version_list = res.data.data.version_list;
-        // console.log(version_list)
+        this.version = 0;
         this.version_options = version_list.map((item, index) => {
           return {
             value: item,
@@ -182,8 +190,9 @@ export default {
           this.version,
       }).then((res) => {
         // var data = res.data.data
-        this.h_start_end = this.timestampToDate(res.data.data.past_time_list);
-        this.p_start_end = this.timestampToDate(res.data.data.pred_time_list);
+        this.h_start_end = this.timestampToDate(res.data.data.past_time_range);
+        this.p_start_end = this.timestampToDate(res.data.data.pred_time_range);
+        console.log(this.h_start_end, this.p_start_end)
         // this.h_datetime_start_list = this.listToOptions(h_time_list);
         // console.log(this.h_datetime_start_list);
         // this.tmp_p_datetime_start_list = this.listToOptions(p_time_list);
@@ -257,11 +266,11 @@ export default {
         url: baseurl + "turbine/YD15/predict",
         data: formData,
       }).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.code == 400) {
           return;
         }
-        this.predict_chart_data = res.data.data.pred_result;
+        this.predict_chart_data = res.data.data;
         console.log(this.predict_chart_data);
       });
 
@@ -302,6 +311,43 @@ export default {
       // console.log(new_timestamp)
       // return new Date(new_timestamp * 1000);
     },
+    hisTimeRangeChange(){
+      if(this.h_datetime.length == 0){
+        return ;
+      }
+      if(this.dataToTimestamp(this.h_datetime[0]) < this.dataToTimestamp(this.h_start_end[0])){
+        this.$message.error('错了哦，开始时间过早');
+        this.h_datetime= [];
+        return ;
+      }
+      if(this.dataToTimestamp(this.h_datetime[1]) > this.dataToTimestamp(this.h_start_end[1])){
+        this.$message.error('错了哦，结束时间过晚');
+        this.h_datetime= [];
+        return ;
+      }
+      this.timeRangeChange()
+    },
+    predTimeRangeChange(){
+      if(this.p_datetime.length == 0){
+        return ;
+      }
+      if(this.dataToTimestamp(this.p_datetime[0]) < this.dataToTimestamp(this.p_start_end[0])){
+        this.$message.error('错了哦，开始时间过早');
+        this.p_datetime= [];
+        return ;
+      }
+      if(this.dataToTimestamp(this.p_datetime[1]) > this.dataToTimestamp(this.p_start_end[1])){
+        this.$message.error('错了哦，结束时间过晚');
+        this.p_datetime= [];
+        return ;
+      }
+      if(this.dataToTimestamp(this.p_datetime[0]) < this.dataToTimestamp(this.h_datetime[1])){
+        this.$message.error('错了哦，预测起始时间应晚于历史结束时间');
+        this.p_datetime= [];
+        return ;
+      }
+      this.timeRangeChange()
+    },
     timeRangeChange() {
       console.log('变化')
       // console.log(this.h_datetime)
@@ -332,7 +378,7 @@ export default {
 
 .home {
   height: 100%;
- 
+
 }
 
 .top-header {

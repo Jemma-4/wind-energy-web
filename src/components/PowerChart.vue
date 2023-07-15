@@ -8,9 +8,9 @@
 import initJson from "../assets/json/init.json";
 export default {
   name: "PowerChart",
+  props: { chart_data: {} },
   data() {
     return {
-      chart_data: initJson.data.turbine_data,
       old_trueKeys: ["yd_15"],
     };
   },
@@ -123,16 +123,15 @@ export default {
             name: item,
             type: "line",
             data: chart_data.map((chart_item) => chart_item[item]),
-            yAxisIndex:Object.keys(initialSelected).indexOf(item)
+            yAxisIndex: Object.keys(initialSelected).indexOf(item)
           };
         }),
         dataZoom: [
           {
             type: "slider",
-            zoomOnMouseWheel:true
+            zoomOnMouseWheel: true
           },
         ],
-        
       };
       // 绘制图表
       option && myChart.setOption(option);
@@ -193,11 +192,10 @@ export default {
     },
     timestampToDate(timestampList) {
       return timestampList.map((timestamp) => {
-        const date = new Date(timestamp*1000);
+        const date = new Date(timestamp * 1000);
         // 使用适合您的时间格式化选项格式化时间戳
-        const formattedTime = `${date.getFullYear()}-${
-          date.getMonth() + 1
-        }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+        const formattedTime = `${date.getFullYear()}-${date.getMonth() + 1
+          }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
         return formattedTime;
       });
     },
@@ -225,7 +223,9 @@ export default {
       // });
     },
   },
-  watch: {},
+  watch: {
+    
+  },
 };
 </script>
   
@@ -234,6 +234,7 @@ export default {
   width: 100%;
   height: 100%;
 }
+
 #power-chart {
   height: 100%;
   width: 100%;
