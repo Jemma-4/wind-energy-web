@@ -2,7 +2,7 @@
   width: 100%;
 }
 .el-input--suffix .el-input__inner {
-  background: #24262B;
+  background: #24262b;
 }
 .el-input.el-input--suffix input,
 .el-input.el-input--suffix input:hover,
@@ -16,15 +16,14 @@
   input {
   border-color: #3f96a5 !important;
   color: white !important;
-  background: #24262B !important;
+  background: #24262b !important;
   box-shadow: 0 0 10px rgba(100, 100, 100, 1) !important;
   height: 30px;
   padding: 0px;
-	padding-left: 5%;
+  padding-left: 5%;
   margin-right: 2px;
-	padding-right: 15%;
+  padding-right: 15%;
 }
-
 
 .el-select.turbine-version:hover::after,
 .el-select.time-btn:hover::after {
@@ -60,12 +59,12 @@
 .el-select-dropdown.el-popper {
   margin-top: 2px !important;
   margin-left: 0px !important;
-  background: #24262B !important;
+  background: #24262b !important;
   border: 0px;
 }
 
 .el-scrollbar__view.el-select-dropdown__list {
-  background: #24262B !important;
+  background: #24262b !important;
   padding: 0px;
 }
 
@@ -73,18 +72,17 @@
 .el-input.is-disabled input::placeholder {
   border-color: #2a626d !important;
   color: rgb(69, 69, 69) !important;
-  background: #24262B;
+  background: #24262b;
   box-shadow: 0 0 0px rgba(100, 100, 100, 1) !important;
 }
 
-.el-input.el-input--suffix input::placeholder
-{
- width: 100% !important;
+.el-input.el-input--suffix input::placeholder {
+  width: 100% !important;
 }
 
 .el-input.is-disabled input::placeholder {
   border-color: #2a626d !important;
-  background: #24262B;
+  background: #24262b;
   box-shadow: 0 0 0px rgba(100, 100, 100, 1) !important;
 }
 
@@ -106,4 +104,109 @@
 .el-button.el-button--primary.el-button--small.is-disabled {
   background-color: #2a626d;
   color: rgb(180, 180, 180) !important;
+}
+
+.el-input__icon.el-range__icon.el-icon-time input,
+.el-date-editor--datetimerange.el-input,
+.el-date-editor--datetimerange.el-input__inner {
+  height: 30px;
+  background: #24262b !important;
+  border-color: #2a626d !important;
+  color: rgb(69, 69, 69) !important;
+  background: #24262b;
+  box-shadow: 0 0 10px rgba(100, 100, 100, 1) !important;
+}
+
+.el-date-editor .el-range-input {
+  background: #24262b !important;
+  color: white;
+}
+.el-input__icon.el-range__icon.el-icon-time,
+.el-range-separator {
+  line-height: 30px;
+  height: 30px;
+}
+
+.el-picker-panel__body,
+.el-picker-panel__footer,
+.el-picker-panel__content.el-date-range-picker__content.is-left,
+.el-picker-panel__content.el-date-range-picker__content.is-right
+  .el-button.el-picker-panel__link-btn.el-button--default.el-button--mini.is-disabled.is-plain
+  .el-button.is-disabled.is-plain,
+.el-button.is-disabled.is-plain:focus,
+.el-button.is-disabled.is-plain:hover,
+.el-time-panel,
+.el-date-range-picker__editor.el-input.el-input--small,
+.el-input__inner {
+  background: #24262b !important;
+}
+
+.el-picker-panel__footer button,
+.el-picker-panel__footer button:hover,
+.el-button.el-picker-panel__link-btn.el-button--default.el-button--mini.is-disabled.is-plain:hover{
+  background: #2a626d !important;
+  border: 0px;
+  
+}
+
+.el-button.el-picker-panel__link-btn.el-button--default.el-button--mini.is-plain,
+.el-button.el-picker-panel__link-btn.el-button--default.el-button--mini.is-plain:hover{
+  background: #2a626d !important;
+  border: 0px;
+  color:white;
+}
+.available.in-range.start-date span, .available.in-range.end-date span{
+  color:white !important;
+}
+
+.el-time-panel__btn.cancel,
+.el-time-panel__btn.confirm,
+.el-button.el-picker-panel__link-btn.el-button--text.el-button--mini {
+  background: rgba(0, 0, 0, 0) !important;
+  color: #3f96a5;
+}
+.available.today,
+.available.today.in-range,
+.el-date-table td.today span{
+  color: #3f96a5 !important;
+}
+.available:hover,
+.available div:hover{
+  color: #3f96a5!important;
+}
+.available.in-range.start-date span,
+.available.in-range.end-date span{
+  background: #3f96a5 !important;
+}
+
+.available.in-range div{
+  background: #2a626d !important;
+  color: rgb(200,200,200) !important;
+}
+
+.el-date-range-picker__editor.el-input.el-input--small,
+.el-date-range-picker__editor.el-input.el-input--small .el-input__inner,
+.el-date-range-picker__editor.el-input.el-input--small.is-disabled,
+.el-input.is-disabled .el-input__inner,
+.el-input.is-disabled input::placeholder {
+  background: #2a626d !important;
+  border: 0px;
+  color: white !important;
+}
+
+.el-time-spinner__item.active{
+  color: white !important;;
+}
+
+.el-time-spinner__item:hover:not(.disabled):not(.active){
+  background: #2a626d !important;
+  color: rgb(200,200,200) !important;
+
+}
+.el-picker-panel.el-date-range-picker.el-popper.has-time,
+.el-time-panel {
+  border: 0px;
+}
+.el-date-range-picker__time-header {
+  border-bottom: 0px;
 }

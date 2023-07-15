@@ -57,11 +57,17 @@
 
 
       <dark-select message="预测数据结束时间" :options="p_datetime_end_list" @selected="SelectPredictEnd" class="time-btn" /> -->
-      <el-date-picker v-model="h_datetime" type="datetimerange" start-placeholder="历史开始时间" end-placeholder="历史结束时间"
+      <!-- <el-date-picker v-model="h_datetime" type="datetimerange" start-placeholder="历史开始时间" end-placeholder="历史结束时间"
         :default-time="['00:00:00', '05:00:00']" :picker-options="historyDateLimit" :disabled="h_datetime_start_list.length === 0">
       </el-date-picker>
       <el-date-picker v-model="p_datetime" type="datetimerange" start-placeholder="预测开始时间" end-placeholder="预测结束时间"
         :default-time="['05:00:00', '00:00:00']" :disabled="p_datetime.length === 0">
+      </el-date-picker> -->
+      <el-date-picker v-model="h_datetime" type="datetimerange" start-placeholder="历史开始时间" end-placeholder="历史结束时间"
+        :default-time="['00:00:00', '05:00:00']" :picker-options="historyDateLimit" >
+      </el-date-picker>
+      <el-date-picker v-model="p_datetime" type="datetimerange" start-placeholder="预测开始时间" end-placeholder="预测结束时间"
+        :default-time="['05:00:00', '00:00:00']" >
       </el-date-picker>
       <dark-select message="模型" :options="model_options" @selected="SelectModel" class="time-btn" />
 

@@ -8,7 +8,6 @@
 import initJson from "../assets/json/init.json";
 export default {
   name: "PowerChart",
-  props: {},
   data() {
     return {
       chart_data: initJson.data.turbine_data,
