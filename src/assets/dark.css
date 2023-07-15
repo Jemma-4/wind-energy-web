@@ -33,7 +33,6 @@
   background-color: #b2b2b2;
   border-radius: 0px;
   color: #000000;
-  font-size: 12px !important;
   /*这里显示的内容为title属性对应的值*/
   content: attr(mtitle);
   z-index: 2;
@@ -187,8 +186,8 @@
 .el-date-range-picker__editor.el-input.el-input--small,
 .el-date-range-picker__editor.el-input.el-input--small .el-input__inner,
 .el-date-range-picker__editor.el-input.el-input--small.is-disabled,
-.el-input.is-disabled .el-input__inner,
-.el-input.is-disabled input::placeholder {
+.el-date-range-picker__editor .el-input.is-disabled .el-input__inner,
+.el-date-range-picker__editor .el-input.is-disabled input::placeholder {
   background: #2a626d !important;
   border: 0px;
   color: white !important;

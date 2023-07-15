@@ -57,7 +57,7 @@ export default {
         tooltip: {
           trigger: "axis",
           axisPointer: {
-            type: "cross",
+            type: "line",
           },
         },
         legend: {
@@ -132,6 +132,7 @@ export default {
             zoomOnMouseWheel:true
           },
         ],
+        
       };
       // 绘制图表
       option && myChart.setOption(option);
