@@ -51,37 +51,19 @@
         class="turbine-version"
       />
 
-      <dark-select
-        message="历史数据开始时间"
-        :options="h_datetime_start_list"
-        @selected="SelectHistoryStart"
-        class="time-btn"
-      />
-      <dark-select
-        message="历史数据结束时间"
-        :options="h_datetime_end_list"
-        @selected="SelectHistoryEnd"
-        class="time-btn"
-      />
-      <dark-select
-        message="预测数据开始时间"
-        :options="p_datetime_start_list"
-        @selected="SelectPredictStart"
-        class="time-btn"
-      />
+      <!-- <dark-select message="历史数据开始时间" :options="h_datetime_start_list" @selected="SelectHistoryStart" class="time-btn" />
+      <dark-select message="历史数据结束时间" :options="h_datetime_end_list" @selected="SelectHistoryEnd" class="time-btn" />
+      <dark-select message="预测数据开始时间" :options="p_datetime_start_list" @selected="SelectPredictStart" class="time-btn" />
 
-      <dark-select
-        message="预测数据结束时间"
-        :options="p_datetime_end_list"
-        @selected="SelectPredictEnd"
-        class="time-btn"
-      />
-      <dark-select
-        message="模型"
-        :options="model_options"
-        @selected="SelectModel"
-        class="time-btn"
-      />
+
+      <dark-select message="预测数据结束时间" :options="p_datetime_end_list" @selected="SelectPredictEnd" class="time-btn" /> -->
+      <el-date-picker v-model="h_datetime" type="datetimerange" start-placeholder="历史开始时间" end-placeholder="历史结束时间"
+        :default-time="['00:00:00', '05:00:00']" :picker-options="historyDateLimit" :disabled="h_datetime_start_list.length === 0">
+      </el-date-picker>
+      <el-date-picker v-model="p_datetime" type="datetimerange" start-placeholder="预测开始时间" end-placeholder="预测结束时间"
+        :default-time="['05:00:00', '00:00:00']" :disabled="p_datetime.length === 0">
+      </el-date-picker>
+      <dark-select message="模型" :options="model_options" @selected="SelectModel" class="time-btn" />
 
       <!-- 查询按钮 -->
       <div class="time-btn">
@@ -137,7 +119,20 @@ export default {
           label: "蚵仔煎",
         },
       ], //页面：可选风机列表
-      model_options: [], //页面：可选模型列表
+      model_options: [
+        {
+          value: 1,
+          label: "mix",
+        },
+        {
+          value: 2,
+          label: "mlp",
+        },
+        {
+          value: 3,
+          label: "seq2seq",
+        },
+      ], //页面：可选模型列表
       version_options: [], //页面：可选版本列表
       h_datetime_start_list: [], //页面：历史数据时间开始列表
       h_datetime_end_list: [], //页面：历史数据时间结束列表
@@ -154,6 +149,8 @@ export default {
       h_datetime_end: 0, //逻辑：选择历史结束时间
       p_datetime_start: 0, //逻辑：选择预测开始时间
       p_datetime_end: 0, //逻辑：选择预测结束时间
+      h_datetime: [],
+      p_datetime: [],
     };
   },
   mounted() {
@@ -175,15 +172,15 @@ export default {
         // this.clearState()
       });
     },
-    clearState() {
-      (this.turbine = 0),
-        (this.version = 0),
-        (this.model = 0),
-        (this.h_datetime_start = 0),
-        (this.h_datetime_end = 0),
-        (this.p_datetime_start = 0),
-        (this.p_datetime_end = 0);
-    },
+    // clearState() {
+    //   (this.turbine = 0),
+    //     (this.version = 0),
+    //     (this.model = 0),
+    //     (this.h_datetime_start = 0),
+    //     (this.h_datetime_end = 0),
+    //     (this.p_datetime_start = 0),
+    //     (this.p_datetime_end = 0);
+    // },
     handleUpload(){
       console.log("iubhubhuvbu")
     },
@@ -247,46 +244,40 @@ export default {
       });
       // todo complete:请求所有历史数据:history_chart_data
     },
-    SelectHistoryStart(h_start) {
-      this.h_datetime_start = h_start;
-      console.log(this.h_datetime_start);
-      this.h_datetime_end_list = this.filterDatesGreaterThan(
-        this.h_datetime_start_list,
-        h_start
-      );
-    },
-    SelectHistoryEnd(h_end) {
-      this.h_datetime_end = h_end;
-      console.log(this.h_datetime_end);
-      this.p_datetime_start_list = this.tmp_p_datetime_start_list;
-    },
-    SelectPredictStart(p_start) {
-      this.p_datetime_start = p_start;
-      console.log(this.p_datetime_start);
-      this.p_datetime_end_list = this.filterDatesGreaterThan(
-        this.p_datetime_start_list,
-        p_start
-      );
-    },
-    SelectPredictEnd(p_end) {
-      this.p_datetime_end = p_end;
-      console.log(this.p_datetime_end);
-      // todo complete:请求所有可选模型
-      this.model_options = [
-        {
-          value: 1,
-          label: "mix",
-        },
-        {
-          value: 2,
-          label: "mlp",
-        },
-        {
-          value: 3,
-          label: "seq2seq",
-        },
-      ];
-    },
+    // SelectHistoryStart(h_start) {
+    //   this.h_datetime_start = h_start
+    //   console.log(this.h_datetime_start)
+    //   this.h_datetime_end_list = this.filterDatesGreaterThan(this.h_datetime_start_list, h_start)
+    // },
+    // SelectHistoryEnd(h_end) {
+    //   this.h_datetime_end = h_end
+    //   console.log(this.h_datetime_end)
+    //   this.p_datetime_start_list = this.tmp_p_datetime_start_list
+    // },
+    // SelectPredictStart(p_start) {
+    //   this.p_datetime_start = p_start
+    //   console.log(this.p_datetime_start)
+    //   this.p_datetime_end_list = this.filterDatesGreaterThan(this.p_datetime_start_list, p_start)
+    // },
+    // SelectPredictEnd(p_end) {
+    //   this.p_datetime_end = p_end
+    //   console.log(this.p_datetime_end)
+    //   // todo complete:请求所有可选模型
+    //   this.model_options = [
+    //     {
+    //       value: 1,
+    //       label: "mix",
+    //     },
+    //     {
+    //       value: 2,
+    //       label: "mlp",
+    //     },
+    //     {
+    //       value: 3,
+    //       label: "seq2seq",
+    //     },
+    //   ]
+    // },
     SelectModel(model) {
       this.all_selected = true;
       this.model = model;
@@ -294,14 +285,14 @@ export default {
     },
     handleSearch() {
       var formData = {
-        turbine_id: this.turbine,
-        data_version: this.version,
-        past_start: this.dataToTimestamp(this.h_datetime_start),
-        past_end: this.dataToTimestamp(this.h_datetime_end),
-        model_id: this.model,
-        pred_start: this.dataToTimestamp(this.p_datetime_start),
-        pred_end: this.dataToTimestamp(this.p_datetime_end),
-      };
+        "turbine_id": this.turbine,
+        "data_version": this.version,
+        "past_start": this.formatdatetime(this.h_datetime[0]),
+        "past_end": this.formatdatetime(this.h_datetime[1]),
+        "model_id": this.model,
+        "pred_start": this.formatdatetime(this.p_datetime[0]),
+        "pred_end": this.formatdatetime(this.p_datetime[1]),
+      }
 
       post({
         url: baseurl + "turbine/YD15/predict",
@@ -342,9 +333,17 @@ export default {
       });
     },
     dataToTimestamp(datetime) {
-      var date = new Date(datetime);
-      return date.getTime() / 1000;
+      var date = new Date(datetime)
+      return date.getTime() / 1000
     },
+    // 规范时间15min为单位
+    formatdatetime(datetime) {
+      var timestamp = this.dataToTimestamp(datetime)
+      console.log(timestamp)
+      return timestamp - (timestamp % (15 * 60))
+      // console.log(new_timestamp)
+      // return new Date(new_timestamp * 1000);
+    }
   },
 };
 </script>
