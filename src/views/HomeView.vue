@@ -7,20 +7,51 @@
     <!-- 数据导入的接口 -->
     <div class="upload-line">
       <!-- 这里需要一个风机的选择  默认一个风机，全部的历史数据-->
-      <input placeholder="请输入风场名称" v-model="upload_turbine" class="turbine-input" />
-      <input placeholder="请输入数据版本号" v-model="upload_version" class="turbine-input" />
-      <input placeholder="请选择上传的风场csv数据" disabled="true" class="datapath-input"/>
-      <el-upload class="upload" :action="upload_url" :limit="1" :on-change="handleUploadSuccess" :file-list="fileList" :before-upload="update_url">
-        <el-button size="small" type="primary" @click="handleUpload">点击上传</el-button>
+      <input
+        placeholder="请输入风场名称"
+        v-model="upload_turbine"
+        class="turbine-input"
+      />
+      <input
+        placeholder="请输入数据版本号"
+        v-model="upload_version"
+        class="turbine-input"
+      />
+      <input
+        placeholder="请选择上传的风场csv数据"
+        disabled="true"
+        class="datapath-input"
+      />
+      <el-upload
+        class="upload"
+        :action="upload_url"
+        :limit="1"
+        :on-change="handleUploadSuccess"
+        :file-list="fileList"
+        :before-upload="update_url"
+      >
+        <el-button size="small" type="primary" @click="handleUpload"
+          >点击上传</el-button
+        >
       </el-upload>
     </div>
 
     <div class="search-line">
       <!-- 这里需要一个风机的选择  默认一个风机，全部的历史数据-->
-      <dark-select message="风机" :options="turbine_options" @selected="SelectTurbine" class="turbine-version" />
+      <dark-select
+        message="风机"
+        :options="turbine_options"
+        @selected="SelectTurbine"
+        class="turbine-version"
+      />
 
       <!-- 增加一个数据版本的选择 -->
-      <dark-select message="数据版本" :options="version_options" @selected="SelectVersion" class="turbine-version" />
+      <dark-select
+        message="数据版本"
+        :options="version_options"
+        @selected="SelectVersion"
+        class="turbine-version"
+      />
 
       <!-- <dark-select message="历史数据开始时间" :options="h_datetime_start_list" @selected="SelectHistoryStart" class="time-btn" />
       <dark-select message="历史数据结束时间" :options="h_datetime_end_list" @selected="SelectHistoryEnd" class="time-btn" />
@@ -28,23 +59,59 @@
 
 
       <dark-select message="预测数据结束时间" :options="p_datetime_end_list" @selected="SelectPredictEnd" class="time-btn" /> -->
-      <el-date-picker v-model="h_datetime" type="datetimerange" start-placeholder="历史开始时间" end-placeholder="历史结束时间"
-        :default-time="['00:00:00', '05:00:00']" :picker-options="historyDateLimit" :disabled="h_start_end.length === 0"
-        @change="hisTimeRangeChange">
+      <el-date-picker
+        v-model="h_datetime"
+        type="datetimerange"
+        start-placeholder="历史开始时间"
+        end-placeholder="历史结束时间"
+        :default-time="['00:00:00', '05:00:00']"
+        :picker-options="historyDateLimit"
+        :disabled="h_start_end.length === 0"
+        @change="hisTimeRangeChange"
+        class="search-time"
+      >
       </el-date-picker>
-      <el-date-picker v-model="p_datetime" type="datetimerange" start-placeholder="预测开始时间" end-placeholder="预测结束时间"
-        :default-time="['05:00:00', '00:00:00']" :disabled="p_start_end.length === 0" @change="predTimeRangeChange">
+      <el-date-picker
+        v-model="p_datetime"
+        type="datetimerange"
+        start-placeholder="预测开始时间"
+        end-placeholder="预测结束时间"
+        :default-time="['05:00:00', '00:00:00']"
+        :disabled="p_start_end.length === 0"
+        @change="predTimeRangeChange"
+        class="search-time"
+      >
       </el-date-picker>
-      <dark-select message="模型" :options="model_options" @selected="SelectModel" class="turbine-version" />
+      <dark-select
+        message="模型"
+        :options="model_options"
+        @selected="SelectModel"
+        class="turbine-version"
+      />
 
       <!-- 查询按钮 -->
       <div class="time-btn">
-        <el-button size="small" type="primary" :disabled="!all_selected" @click="handleSearch">预测</el-button>
+        <el-button
+          size="small"
+          type="primary"
+          :disabled="!all_selected"
+          @click="handleSearch"
+          >预测</el-button
+        >
       </div>
     </div>
     <div id="power-chart-box">
-      <power-chart :chart_data="history_chart_data" v-if="history_chart_data.length!=0&&Object.keys(predict_chart_data).length==0"/>
-      <predict-chart :chart_data="predict_chart_data" v-if="Object.keys(predict_chart_data).length!=0"/>
+      <power-chart
+        :chart_data="history_chart_data"
+        v-if="
+          history_chart_data.length != 0 &&
+          Object.keys(predict_chart_data).length == 0
+        "
+      />
+      <predict-chart
+        :chart_data="predict_chart_data"
+        v-if="Object.keys(predict_chart_data).length != 0"
+      />
       <!-- <predict-chart/> -->
     </div>
   </div>
@@ -64,16 +131,16 @@ export default {
     PowerChart,
     TopHeader,
     DarkSelect,
-    PredictChart
+    PredictChart,
   },
   data() {
     return {
       upload_url: "",
-      upload_path:"",
+      upload_path: "",
       fileList: [], //页面：上传文件列表
       upload_turbine: "",
       upload_version: "",
-      turbine_ani:"../../public/turbine/wind.html",
+      turbine_ani: "../../public/turbine/wind.html",
       turbine_options: [
         {
           value: "选项1",
@@ -106,8 +173,8 @@ export default {
       // h_datetime_end: 0, //逻辑：选择历史结束时间
       // p_datetime_start: 0, //逻辑：选择预测开始时间
       // p_datetime_end: 0, //逻辑：选择预测结束时间
-      h_start_end: [],  // 页面，历史起止时间，两元素
-      p_start_end: [],  // 页面，预测起止时间，两元素
+      h_start_end: [], // 页面，历史起止时间，两元素
+      p_start_end: [], // 页面，预测起止时间，两元素
       h_datetime: [],
       p_datetime: [],
     };
@@ -117,8 +184,13 @@ export default {
     this.getTurbineList();
   },
   methods: {
-    update_url(file){
-      this.upload_url = baseurl + 'turbine/import/'+this.upload_turbine +'/' + this.upload_version;
+    update_url(file) {
+      this.upload_url =
+        baseurl +
+        "turbine/import/" +
+        this.upload_turbine +
+        "/" +
+        this.upload_version;
     },
     getTurbineList() {
       get({
@@ -136,18 +208,18 @@ export default {
     },
     clearState() {
       this.all_selected = false;
-      this.model_options= [];
+      this.model_options = [];
       this.predict_chart_data = {};
       this.history_chart_data = [];
       this.version_options = [];
-      this.h_start_end= [];  // 页面，历史起止时间，两元素
-      this.p_start_end= [];  // 页面，预测起止时间，两元素
-      this.h_datetime= [];
-      this.p_datetime= [];
+      this.h_start_end = []; // 页面，历史起止时间，两元素
+      this.p_start_end = []; // 页面，预测起止时间，两元素
+      this.h_datetime = [];
+      this.p_datetime = [];
       // console.log('clear')
     },
     handleUpload() {
-      console.log("iubhubhuvbu")
+      console.log("iubhubhuvbu");
     },
     handleUploadSuccess(file, fileList) {
       console.log(file);
@@ -160,7 +232,8 @@ export default {
       }
       console.log(document.getElementsByClassName("el-upload__input")[0].value);
       this.getTurbineList();
-      this.upload_path=document.getElementsByClassName("el-upload__input")[0].value
+      this.upload_path =
+        document.getElementsByClassName("el-upload__input")[0].value;
     },
     SelectTurbine(turbine) {
       this.turbine = turbine;
@@ -192,7 +265,7 @@ export default {
         // var data = res.data.data
         this.h_start_end = this.timestampToDate(res.data.data.past_time_range);
         this.p_start_end = this.timestampToDate(res.data.data.pred_time_range);
-        console.log(this.h_start_end, this.p_start_end)
+        console.log(this.h_start_end, this.p_start_end);
         // this.h_datetime_start_list = this.listToOptions(h_time_list);
         // console.log(this.h_datetime_start_list);
         // this.tmp_p_datetime_start_list = this.listToOptions(p_time_list);
@@ -253,14 +326,14 @@ export default {
     },
     handleSearch() {
       var formData = {
-        "turbine_id": this.turbine,
-        "data_version": this.version,
-        "past_start": this.formatdatetime(this.h_datetime[0]),
-        "past_end": this.formatdatetime(this.h_datetime[1]),
-        "model_id": this.model,
-        "pred_start": this.formatdatetime(this.p_datetime[0]),
-        "pred_end": this.formatdatetime(this.p_datetime[1]),
-      }
+        turbine_id: this.turbine,
+        data_version: this.version,
+        past_start: this.formatdatetime(this.h_datetime[0]),
+        past_end: this.formatdatetime(this.h_datetime[1]),
+        model_id: this.model,
+        pred_start: this.formatdatetime(this.p_datetime[0]),
+        pred_end: this.formatdatetime(this.p_datetime[1]),
+      };
 
       post({
         url: baseurl + "turbine/YD15/predict",
@@ -294,66 +367,82 @@ export default {
       return timestampList.map((timestamp) => {
         const date = new Date(timestamp * 1000);
         // 使用适合您的时间格式化选项格式化时间戳
-        const formattedTime = `${date.getFullYear()}-${date.getMonth() + 1
-          }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+        const formattedTime = `${date.getFullYear()}-${
+          date.getMonth() + 1
+        }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
         return formattedTime;
       });
     },
     dataToTimestamp(datetime) {
-      var date = new Date(datetime)
-      return date.getTime() / 1000
+      var date = new Date(datetime);
+      return date.getTime() / 1000;
     },
     // 规范时间15min为单位
     formatdatetime(datetime) {
-      var timestamp = this.dataToTimestamp(datetime)
-      console.log(timestamp)
-      return timestamp - (timestamp % (15 * 60))
+      var timestamp = this.dataToTimestamp(datetime);
+      console.log(timestamp);
+      return timestamp - (timestamp % (15 * 60));
       // console.log(new_timestamp)
       // return new Date(new_timestamp * 1000);
     },
-    hisTimeRangeChange(){
-      if(this.h_datetime.length == 0){
-        return ;
+    hisTimeRangeChange() {
+      if (this.h_datetime.length == 0) {
+        return;
       }
-      if(this.dataToTimestamp(this.h_datetime[0]) < this.dataToTimestamp(this.h_start_end[0])){
-        this.$message.error('错了哦，开始时间过早');
-        this.h_datetime= [];
-        return ;
+      if (
+        this.dataToTimestamp(this.h_datetime[0]) <
+        this.dataToTimestamp(this.h_start_end[0])
+      ) {
+        this.$message.error("错了哦，开始时间过早");
+        this.h_datetime = [];
+        return;
       }
-      if(this.dataToTimestamp(this.h_datetime[1]) > this.dataToTimestamp(this.h_start_end[1])){
-        this.$message.error('错了哦，结束时间过晚');
-        this.h_datetime= [];
-        return ;
+      if (
+        this.dataToTimestamp(this.h_datetime[1]) >
+        this.dataToTimestamp(this.h_start_end[1])
+      ) {
+        this.$message.error("错了哦，结束时间过晚");
+        this.h_datetime = [];
+        return;
       }
-      this.timeRangeChange()
+      this.timeRangeChange();
     },
-    predTimeRangeChange(){
-      if(this.p_datetime.length == 0){
-        return ;
+    predTimeRangeChange() {
+      if (this.p_datetime.length == 0) {
+        return;
       }
-      if(this.dataToTimestamp(this.p_datetime[0]) < this.dataToTimestamp(this.p_start_end[0])){
-        this.$message.error('错了哦，开始时间过早');
-        this.p_datetime= [];
-        return ;
+      if (
+        this.dataToTimestamp(this.p_datetime[0]) <
+        this.dataToTimestamp(this.p_start_end[0])
+      ) {
+        this.$message.error("错了哦，开始时间过早");
+        this.p_datetime = [];
+        return;
       }
-      if(this.dataToTimestamp(this.p_datetime[1]) > this.dataToTimestamp(this.p_start_end[1])){
-        this.$message.error('错了哦，结束时间过晚');
-        this.p_datetime= [];
-        return ;
+      if (
+        this.dataToTimestamp(this.p_datetime[1]) >
+        this.dataToTimestamp(this.p_start_end[1])
+      ) {
+        this.$message.error("错了哦，结束时间过晚");
+        this.p_datetime = [];
+        return;
       }
-      if(this.dataToTimestamp(this.p_datetime[0]) < this.dataToTimestamp(this.h_datetime[1])){
-        this.$message.error('错了哦，预测起始时间应晚于历史结束时间');
-        this.p_datetime= [];
-        return ;
+      if (
+        this.dataToTimestamp(this.p_datetime[0]) <
+        this.dataToTimestamp(this.h_datetime[1])
+      ) {
+        this.$message.error("错了哦，预测起始时间应晚于历史结束时间");
+        this.p_datetime = [];
+        return;
       }
-      this.timeRangeChange()
+      this.timeRangeChange();
     },
     timeRangeChange() {
-      console.log('变化')
+      console.log("变化");
       // console.log(this.h_datetime)
       // console.log(this.p_datetime)
       if (!(this.h_datetime.length == 0 || this.p_datetime.length == 0)) {
-        console.log(this.h_datetime, this.p_datetime)
+        console.log(this.h_datetime, this.p_datetime);
         this.model_options = [
           {
             value: 1,
@@ -367,103 +456,216 @@ export default {
             value: 3,
             label: "seq2seq",
           },
-        ]
+        ];
       }
-
     },
   },
 };
 </script>
 <style scoped>
+@media only screen and (min-device-width: 768px) {
+  .home {
+    height: 100%;
+  }
 
-.home {
-  height: 100%;
+  .upload {
+    width: 12%;
+    height: 100%;
+    padding: 0px;
+    float: left;
+    margin-left: 2%;
 
+  }
+
+  .turbine-input,
+  .turbine-input:focus,
+  .turbine-input:active {
+    width: 7.8%;
+    margin-right: 0.5%;
+    float: left;
+    background: #24262b;
+    height: 100%;
+    border: 0px;
+    color: white !important;
+    border: 1px solid #3f96a5;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+    outline: none;
+  }
+
+  .datapath-input {
+    width: 30%;
+    float: left;
+    background: #24262b;
+    height: 100%;
+    border: 0px;
+    color: white !important;
+    border: 1px solid #3f96a5;
+    border-radius: 4px;
+    margin: 0px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+  }
+
+  .el-button.el-button--primary.el-button--small,
+  .my-btn {
+    color: white;
+    background: #3f96a5;
+    border: 0px;
+    height: 100%;
+    width: 100%;
+    float: left;
+    padding: 0px;
+    box-shadow: 0 0 10px rgba(100, 100, 100, 1);
+  }
+
+  .turbine-version {
+    width: 8%;
+    float: left;
+    margin-right: 0.5%;
+    height: 100%;
+  }
+
+  .search-time {
+    width: 27%;
+    float: left;
+    margin-right: 0.5%;
+    height: 100%;
+  }
+
+  .time-btn {
+    width: 12%;
+    float: left;
+    margin-right: 0.5%;
+    height: 100%;
+  }
+
+  .top-header {
+    height: 120px;
+  }
+
+  .upload-line {
+    padding-left: 1%;
+    width: 100%;
+    height: 5%;
+  }
+
+  .search-line {
+    padding-left: 1%;
+    width: 100%;
+    height: 5%;
+    float: left;
+    margin-top: 1%;
+  }
+
+  #power-chart-box {
+    margin-top: 6%;
+    height: 67%;
+    width: 100%;
+  }
 }
 
-.top-header {
-  height: 15%;
-}
+@media only screen and (max-device-width : 768px) {
+  .home {
+    height: 100%;
+  }
 
-.upload-line {
-  width: 100%;
-  height: 5%;
-}
+  .upload {
+    margin-top: 3%;
+    width: 21.5%;
+    height: 100%;
+    padding: 0px;
+    float: left;
+    margin-left: 2%;
+  }
 
-.upload {
-  width: 12%;
-  height: 100%;
-  padding: 0px;
-  float: left;
-  margin-left: 2%;
-}
+  .turbine-input,
+  .turbine-input:focus,
+  .turbine-input:active {
+    width: 45%;
+    margin-right: 2%;
+    float: left;
+    background: #24262b;
+    height: 100%;
+    border: 0px;
+    color: white !important;
+    border: 1px solid #3f96a5;
+    border-radius: 4px;
+    outline: none;
+  }
 
+  .datapath-input {
+    width: 70%;
+    float: left;
+    background: #24262b;
+    height: 100%;
+    border: 0px;
+    color: white !important;
+    border: 1px solid #3f96a5;
+    border-radius: 4px;
+    margin: 0px;
+    margin-top:3%;
+  }
 
-.turbine-input,
-.turbine-input:focus,
-.turbine-input:active {
-  width: 7.7%;
-  margin-right: 0.4%;
-  float: left;
-  background: #24262b;
-  height: 100%;
-  border: 0px;
-  color: white !important;
-  border: 1px solid #3f96a5;
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
-  outline: none;
-}
+  .el-button.el-button--primary.el-button--small,
+  .my-btn {
+    color: white;
+    background: #3f96a5;
+    border: 0px;
+    height: 100%;
+    width: 100%;
+    float: left;
+    padding: 0px;
+    margin-top:2%;
 
-.datapath-input {
-  width: 30%;
-  float: left;
-  background: #24262b;
-  height: 100%;
-  border: 0px;
-  color: white !important;
-  border: 1px solid #3f96a5;
-  border-radius: 4px;
-  margin: 0px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
-}
+  }
 
-.el-button.el-button--primary.el-button--small,
-.my-btn {
-  color: white;
-  background: #3f96a5;
-  border: 0px;
-  height: 100%;
-  width: 100%;
-  float: left;
-  padding: 0px;
-  box-shadow: 0 0 10px rgba(100, 100, 100, 1);
-}
+  .turbine-version {
+    width: 46.5%;
+    float: left;
+    margin-right: 2%;
+    height: 100%;
+    margin-top: 2%;
+  }
 
-.search-line {
-  width: 100%;
-  height: 5%;
-  float: left;
-  margin-top: 1%;
-}
+  .search-time {
+    width: 95%;
+    float: left;
+    margin-right: 0.5%;
+    height: 100%;
+    margin-top: 2%;
 
-.turbine-version {
-  width: 8%;
-  float: left;
-  margin-right: 0.5%;
-  height:100%;
-}
+  }
 
-.time-btn {
-  width: 12%;
-  float: left;
-  margin-right: 0.5%;
-  height:100%;
-}
+  .time-btn {
+    width: 46.5%;
+    float: left;
+    margin-right: 0.5%;
+    height: 100%;
+    margin-top: 1%;
 
-#power-chart-box {
-  margin-top: 6%;
-  height: 67%;
-  width: 100%;
+  }
+
+  .top-header {
+    height: 100px;
+  }
+
+  .upload-line {
+    padding-left:2% ;
+    width: 100%;
+    height: 5%;
+  }
+
+  .search-line {
+    padding-left:2% ;
+    width: 100%;
+    height: 5%;
+    float: left;
+  }
+
+  #power-chart-box {
+    margin-top: 6%;
+    height: 67%;
+    width: 100%;
+  }
 }
 </style>

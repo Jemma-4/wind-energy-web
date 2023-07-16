@@ -1,6 +1,8 @@
-* {
-  font-size: 22px !important;
-}
+@media only screen and (min-device-width: 768px) {* {
+  font-size: clamp(0.75rem, 0.466rem + 0.57vw, 1.375rem) !important;
+}}
+@media only screen and (max-device-width: 768px) {* {
+  font-size: 14px !important;}}
 
 .el-upload.el-upload--text {
   width: 100%;
@@ -25,7 +27,6 @@
   border-color: #3f96a5 !important;
   color: white !important;
   background: #24262b !important;
-  box-shadow: 0 0 10px rgba(100, 100, 100, 1) !important;
   height: 100% !important;
   padding: 0px;
   padding-left: 5%;
@@ -68,7 +69,6 @@
   border-color: #2a626d !important;
   color: rgb(69, 69, 69) !important;
   background: #24262b;
-  box-shadow: 0 0 0px rgba(100, 100, 100, 1) !important;
 }
 
 .el-input.el-input--suffix input::placeholder {
@@ -78,7 +78,6 @@
 .el-input.is-disabled input::placeholder {
   border-color: #2a626d !important;
   background: #24262b;
-  box-shadow: 0 0 0px rgba(100, 100, 100, 1) !important;
 }
 
 .el-input.is-disabled input::placeholder {
@@ -109,7 +108,6 @@
   border-color: #2a626d !important;
   color: rgb(69, 69, 69) !important;
   background: #24262b;
-  box-shadow: 0 0 10px rgba(100, 100, 100, 1) !important;
 }
 
 .el-date-editor .el-range-input {
@@ -118,8 +116,19 @@
 }
 .el-input__icon.el-range__icon.el-icon-time,
 .el-range-separator {
-  line-height: 100%;
   height: 100%;
+  line-height: 100% !important;
+
+  vertical-align: middle;
+  text-align: center;
+}
+
+.el-input__icon.el-range__icon.el-icon-time::before
+{
+  height: 100%;
+  line-height: 100% !important;
+  vertical-align: middle;
+  transform: translateY(-50%);
 }
 
 .el-picker-panel__body,
