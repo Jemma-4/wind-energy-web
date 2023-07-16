@@ -663,8 +663,8 @@ export default {
   }
 
   #power-chart-box {
-    margin-top: 6%;
-    height: 67%;
+    margin-top: 2%;
+    height: 45%;
     width: 100%;
   }
 }
