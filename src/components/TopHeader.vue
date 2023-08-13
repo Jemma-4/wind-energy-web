@@ -3,7 +3,7 @@
     <dv-decoration-8 class="header-left-decoration" />
     <dv-decoration-5 class="header-center-decoration" />
     <dv-decoration-8 class="header-right-decoration" :reverse="true" />
-    <div class="center-title">龙源电力功率预测分析系统</div>
+    <div class="center-title">电力功率预测分析系统</div>
   </div>
 </template>
   

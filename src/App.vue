@@ -17,7 +17,7 @@
   background: yellow;
   font:16px !important;
 }
-#dv-full-screen-container {
+/* #dv-full-screen-container {
   background-image: url("./assets/bg.png");
   background-size: 100% 100%;
   width:100% !important; 
@@ -30,7 +30,7 @@
   flex-direction: column;
   transform:scale(1) !important;
   
-}
+} */
 element.style {
     width:100%;
     height:100%

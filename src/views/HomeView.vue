@@ -124,6 +124,8 @@ import PredictChart from "@/components/PredictChart.vue";
 import TopHeader from "@/components/TopHeader.vue";
 import DarkSelect from "@/components/DarkSelect.vue";
 import { baseurl, get, post } from "../network/request.js";
+import '../assets/light.css'
+// import '../assets/dark.css'
 
 export default {
   name: "HomeView",
@@ -463,6 +465,7 @@ export default {
 };
 </script>
 <style scoped>
+
 @media only screen and (min-device-width: 768px) {
   .home {
     height: 100%;
@@ -477,7 +480,7 @@ export default {
 
   }
 
-  .turbine-input,
+  /* .turbine-input,
   .turbine-input:focus,
   .turbine-input:active {
     width: 7.8%;
@@ -504,7 +507,7 @@ export default {
     border-radius: 4px;
     margin: 0px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
-  }
+  } */
 
   .el-button.el-button--primary.el-button--small,
   .my-btn {
@@ -564,7 +567,7 @@ export default {
   }
 }
 
-@media only screen and (max-device-width : 768px) {
+/* @media only screen and (max-device-width : 768px) {
   .home {
     height: 100%;
   }
@@ -663,9 +666,9 @@ export default {
   }
 
   #power-chart-box {
-    margin-top: 2%;
+    margin-top: 60%;
     height: 45%;
     width: 100%;
   }
-}
+} */
 </style>

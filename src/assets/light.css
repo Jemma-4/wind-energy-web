@@ -1,12 +1,14 @@
 @media only screen and (min-device-width: 768px) {
   * {
     font-size: clamp(0.75rem, 0.466rem + 0.57vw, 1.375rem) !important;
+    color: #000000 !important;
   }
 }
 
 @media only screen and (max-device-width: 768px) {
   * {
     font-size: 12px !important;
+    color: #000000 !important;
   }
 }
 
@@ -15,11 +17,11 @@
 }
 
 .el-input--suffix .el-input__inner {
-  background: #24262b;
+  background: #E0F0F4;
 }
 
 #dv-full-screen-container {
-  background-image: url("./bg.png");
+  background-image: url("./bg_light.png");
   background-size: 100% 100%;
   width: 100% !important;
   height: 100% !important;
@@ -44,8 +46,8 @@
 .el-select .el-input.is-disabled .el-input__inner:hover,
 .el-select .el-input .el-select__caret:hover~.el-input.el-input--suffix input {
   border-color: #3f96a5 !important;
-  color: white !important;
-  background: #24262b !important;
+  /* color: white !important; */
+  background: #E0F0F4 !important;
   height: 100% !important;
   padding: 0px;
   padding-left: 5%;
@@ -60,7 +62,7 @@
   top: 122%;
   background-color: #b2b2b2;
   border-radius: 0px;
-  color: #000000;
+  /* color: #000000; */
   /*这里显示的内容为title属性对应的值*/
   content: attr(mtitle);
   z-index: 2;
@@ -74,20 +76,20 @@
 
 .el-select-dropdown.el-popper {
   margin-left: 0px !important;
-  background: #24262b !important;
+  background: #E0F0F4 !important;
   border: 0px;
 }
 
 .el-scrollbar__view.el-select-dropdown__list {
-  background: #24262b !important;
+  background: #E0F0F4 !important;
   padding: 0px;
 }
 
 .el-input.is-disabled .el-input__inner,
 .el-input.is-disabled input::placeholder {
-  border-color: #2a626d !important;
-  color: rgb(69, 69, 69) !important;
-  background: #24262b;
+  border-color: #2D9AB1 !important;
+  /* color: rgb(69, 69, 69) !important; */
+  background: #E0F0F4;
 }
 
 .el-input.el-input--suffix input::placeholder {
@@ -95,13 +97,13 @@
 }
 
 .el-input.is-disabled input::placeholder {
-  border-color: #2a626d !important;
-  background: #24262b;
+  border-color: #2D9AB1 !important;
+  background: #E0F0F4;
 }
 
 .el-input.is-disabled input::placeholder {
-  border-color: #2a626d !important;
-  color: rgb(120, 120, 120) !important;
+  border-color: #2D9AB1 !important;
+  /* color: rgb(120, 120, 120) !important; */
   background: rgba(255, 255, 255, 0) !important;
   transform: scale(1);
   text-align: left;
@@ -117,23 +119,23 @@
 }
 
 .el-button.el-button--primary.el-button--small.is-disabled {
-  background-color: #2a626d;
-  color: rgb(180, 180, 180) !important;
+  background-color: #2D9AB1;
+  /* color: rgb(180, 180, 180) !important; */
 }
 
 .el-input__icon.el-range__icon.el-icon-time input,
 .el-date-editor--datetimerange.el-input,
 .el-date-editor--datetimerange.el-input__inner {
   height: 100%;
-  background: #24262b !important;
-  border-color: #2a626d !important;
-  color: rgb(69, 69, 69) !important;
-  background: #24262b;
+  background: #E0F0F4 !important;
+  border-color: #2D9AB1 !important;
+  /* color: rgb(69, 69, 69) !important; */
+  background: #E0F0F4;
 }
 
 .el-date-editor .el-range-input {
-  background: #24262b !important;
-  color: white;
+  background: #E0F0F4 !important;
+  /* color: white; */
 }
 
 .el-input__icon.el-range__icon.el-icon-time,
@@ -161,27 +163,27 @@
 .el-time-panel,
 .el-date-range-picker__editor.el-input.el-input--small,
 .el-input__inner {
-  background: #24262b !important;
+  background: #E0F0F4 !important;
 }
 
 .el-picker-panel__footer button,
 .el-picker-panel__footer button:hover,
 .el-button.el-picker-panel__link-btn.el-button--default.el-button--mini.is-disabled.is-plain:hover {
-  background: #2a626d !important;
+  background: #2D9AB1 !important;
   border: 0px;
 
 }
 
 .el-button.el-picker-panel__link-btn.el-button--default.el-button--mini.is-plain,
 .el-button.el-picker-panel__link-btn.el-button--default.el-button--mini.is-plain:hover {
-  background: #2a626d !important;
+  background: #2D9AB1 !important;
   border: 0px;
-  color: white;
+  /* color:white; */
 }
 
 .available.in-range.start-date span,
 .available.in-range.end-date span {
-  color: white !important;
+  /* color:white !important; */
 }
 
 .el-time-panel__btn.cancel,
@@ -208,8 +210,8 @@
 }
 
 .available.in-range div {
-  background: #2a626d !important;
-  color: rgb(200, 200, 200) !important;
+  background: #2D9AB1 !important;
+  /* color: rgb(200,200,200) !important; */
 }
 
 .el-date-range-picker__editor.el-input.el-input--small,
@@ -217,19 +219,18 @@
 .el-date-range-picker__editor.el-input.el-input--small.is-disabled,
 .el-date-range-picker__editor .el-input.is-disabled .el-input__inner,
 .el-date-range-picker__editor .el-input.is-disabled input::placeholder {
-  background: #2a626d !important;
+  background: #2D9AB1 !important;
   border: 0px;
-  color: white !important;
+  /* color: white !important; */
 }
 
 .el-time-spinner__item.active {
-  color: white !important;
-  ;
+  /* color: white !important;; */
 }
 
 .el-time-spinner__item:hover:not(.disabled):not(.active) {
-  background: #2a626d !important;
-  color: rgb(200, 200, 200) !important;
+  background: #2D9AB1 !important;
+  /* color: rgb(200,200,200) !important; */
 
 }
 
@@ -256,7 +257,7 @@
 }
 
 .el-date-range-picker__header button {
-  color: white;
+  /* color: white; */
   padding-left: 0px;
   padding-right: 0px;
   margin-left: 0px;
@@ -276,10 +277,10 @@
   width: 7.8%;
   margin-right: 0.5%;
   float: left;
-  background: #24262b;
+  background: #E0F0F4;
   height: 100%;
   border: 0px;
-  color: white !important;
+  /* color: white !important; */
   border: 1px solid #3f96a5;
   border-radius: 4px;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
@@ -289,34 +290,15 @@
 .datapath-input {
   width: 30%;
   float: left;
-  background: #24262b;
+  background: #E0F0F4;
   height: 100%;
   border: 0px;
-  color: white !important;
+  /* color: white !important; */
   border: 1px solid #3f96a5;
   border-radius: 4px;
   margin: 0px;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
 }
-
-.el-button.el-button--primary.el-button--small,
-.my-btn {
-  color: white;
-  background: #3f96a5;
-  border: 0px;
-  height: 100%;
-  width: 100%;
-  float: left;
-  padding: 0px;
-  box-shadow: 0 0 10px rgba(100, 100, 100, 1);
-}
-
-.el-select-dropdown__item.hover,
-.option-item:hover {
-  background: #24262b !important;
-  color: white;
-}
-
 
 @media only screen and (max-device-width : 768px) {
   .home {
@@ -338,10 +320,10 @@
     width: 45%;
     margin-right: 2%;
     float: left;
-    background: #24262b;
+    background: #E0F0F4;
     height: 100%;
     border: 0px;
-    color: white !important;
+    /* color: white !important; */
     border: 1px solid #3f96a5;
     border-radius: 4px;
     outline: none;
@@ -350,10 +332,10 @@
   .datapath-input {
     width: 70%;
     float: left;
-    background: #24262b;
+    background: #E0F0F4;
     height: 100%;
     border: 0px;
-    color: white !important;
+    /* color: white !important; */
     border: 1px solid #3f96a5;
     border-radius: 4px;
     margin: 0px;
@@ -362,7 +344,7 @@
 
   .el-button.el-button--primary.el-button--small,
   .my-btn {
-    color: white;
+    /* color: white; */
     background: #3f96a5;
     border: 0px;
     height: 100%;
@@ -426,4 +408,21 @@
   .el-date-editor--datetimerange.el-input__inner {
     width: 95%;
   }
+
+}
+
+.el-select-dropdown__item.hover,
+.option-item:hover {
+  background: #2D9AB1 !important;
+  color: white;
+}
+
+polyline {
+  stroke-width: 2;
+  fill: transparent;
+  stroke: white !important;
+}
+
+.center-title {
+  color: white !important;
 }

@@ -6,7 +6,8 @@ import './registerServiceWorker'
 import router from './router'
 import * as echarts from 'echarts'
 import dataV from '@jiaminghi/data-view'
-import './assets/dark.css'
+// import './assets/light.css'
+// import './assets/dark.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts

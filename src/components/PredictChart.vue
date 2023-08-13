@@ -65,15 +65,15 @@ export default {
           },
         },
         grid: {
-          right: "20%",
+          right: "10%",
         },
-        toolbox: {
-          feature: {
-            dataView: { show: true, readOnly: false },
-            restore: { show: true },
-            saveAsImage: { show: true },
-          },
-        },
+        // toolbox: {
+        //   feature: {
+        //     dataView: { show: true, readOnly: false },
+        //     restore: { show: true },
+        //     saveAsImage: { show: true },
+        //   },
+        // },
         legend: {
           data: ["true_yd15", "pred_yd15", "diff"],
         },

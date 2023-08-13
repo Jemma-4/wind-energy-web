@@ -65,10 +65,10 @@ export default {
   color: #3f96a5;
 }
 
-.el-select-dropdown__item.hover,
+/* .el-select-dropdown__item.hover,
 .option-item:hover {
   background: #24262B !important;
   color: white;
-}
+} */
 
 </style>
